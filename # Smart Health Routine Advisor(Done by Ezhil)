@@ -1,0 +1,103 @@
+import random
+from datetime import datetime
+import calendar
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# HEALTH SUGGESTIONS
+
+
+water_tips = [
+    "Drink 8 glasses of water",
+    "Drink warm water in the morning",
+    "Carry a water bottle"
+]
+
+exercise_tips = [
+    "Go for a 30 minute walk",
+    "Do stretching exercises",
+    "Try 10 minutes of yoga"
+]
+
+food_tips = [
+    "Eat more fruits",
+    "Avoid junk food",
+    "Eat vegetables today"
+]
+
+sleep_tips = [
+    "Sleep before 11 PM",
+    "Avoid phone before sleep",
+    "Sleep at least 7 hours"
+]
+
+
+# DATE AND DAY
+
+
+today = datetime.now()
+
+print("SMART HEALTH ROUTINE ADVISOR")
+print("Date :", today.strftime("%d-%m-%y"))
+print("Day  :", calendar.day_name[today.weekday()])
+
+# RANDOM DAILY TIPS
+
+
+print("\n--- Today's Health Tips ---")
+
+print("Water Tip    :", random.choice(water_tips))
+print("Exercise Tip :", random.choice(exercise_tips))
+print("Food Tip     :", random.choice(food_tips))
+print("Sleep Tip    :", random.choice(sleep_tips))
+
+# HABIT TRACKER
+
+
+print("\nEnter Yes or No")
+
+water = input("Did you drink enough water? ").lower()
+exercise = input("Did you exercise today? ").lower()
+food = input("Did you eat healthy food? ").lower()
+sleep = input("Did you sleep well? ").lower()
+
+# Convert Yes/No to numbers
+
+habit_values = []
+
+for answer in [water, exercise, food, sleep]:
+    if answer == "yes":
+        habit_values.append(1)
+    else:
+        habit_values.append(0)
+
+
+# PANDAS DATAFRAME
+
+
+habits = ["Water", "Exercise", "Healthy Food", "Good Sleep"]
+
+df = pd.DataFrame({
+    "Habits": habits,
+    "Completed": habit_values
+})
+
+print("Habit Report")
+print(df)
+
+# GRAPH
+
+
+plt.figure(figsize=(5,6))
+
+plt.bar(df["Habits"], df["Completed"])
+
+plt.title("Daily Health Habit Tracker")
+plt.ylabel("Completed")
+plt.xlabel("Habits")
+
+plt.ylim(0, 2)
+
+plt.tight_layout()
+
+plt.show()
