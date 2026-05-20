@@ -1,0 +1,56 @@
+import time
+import datetime
+import pywhatkit as kit
+import random
+import webbrowser as wb
+# Motivational messages
+quotes = [
+    "Wake up and chase your dreams!",
+    "Success starts with discipline.",
+    "Every day is a fresh start!",
+    "Push yourself, no one else will do it for you.",
+    "You are stronger than you think!"]
+bed_quotes = [
+    "Tonight, rest is productive too.",
+    "Sleep is the best meditation.",
+    "Let go of today. Tomorrow will handle itself.",
+    "Your mind deserves a break. Close your eyes."]
+#  Set Alarm Time (24-hour format)
+print("Let's set your alarm...")
+alarm_hour = int(input("Enter hour (0-23): "))
+alarm_minute = int(input("Enter minute (0-59): "))
+print("⏳ Alarm set... Waiting...")
+a=input("Do you want to set your bedtime?")
+if a.lower()=="yes":
+    print("let's set your bedtime")
+    bed_hour = int(input("Enter hour (0-23): "))
+    bed_minute = int(input("Enter minute (0-59): "))
+    print("your Bed time is setting now...")
+else:
+    print("That's fine..")
+while True:
+    now = datetime.datetime.now()
+    current_hour = now.hour
+    current_minute = now.minute
+    if current_hour == alarm_hour and current_minute == alarm_minute:
+        print("\n🔔 Wake Up!")
+        wb.open("https://www.youtube.com/shorts/5WcIoWgL8-Q")
+        message = random.choice(quotes)
+        print("💬 Motivation:", message)
+        kit.sendwhatmsg_instantly("+916374547764", message,alarm_hour,alarm_minute)
+        print("Get refresh...!")
+        time.sleep(300)
+        a=input("Can I play a motivational video?")
+        if a.lower()=="yes":
+            kit.playonyt("morning motivation")
+        else:
+            print("Fine!have a nice day")
+
+    if a.lower()=="yes":
+     if current_hour == bed_hour and current_minute == bed_minute:
+       mes=random.choice(bed_quotes)
+       print("\n🌙Bed Time!Put your phone down and sleep")
+       kit.sendwhatmsg_instantly("+916374547764",mes,bed_hour,bed_minute)
+       kit.playonyt("Night melody")
+       time.sleep(60)
+time.sleep(30)
