@@ -1,0 +1,217 @@
+
+# Features:
+# 1. Ask File Path 
+# 2. Check Whether File Exists
+# 3. Read File
+# 4. Write File
+# 5. Append File
+# 6. Find and Replace
+# 7. Encrypt using Pickle
+# 8. Decrypt using Pickle
+# 9. Exit
+
+import pickle
+
+
+class Notepad:
+
+    # ---------------- CONSTRUCTOR ----------------
+    def __init__(self):
+        self.filepath = ""
+
+    # ---------------- OPEN FILE ----------------
+    def open_file(self):
+        self.filepath = input("Enter File Path: ")
+
+        try:
+            file = open(self.filepath, "r")
+            file.close()
+
+            print("File opened successfully!")
+            return True
+
+        except FileNotFoundError:
+            print("File not found!")
+            return False
+
+        except Exception as e:
+            print("Error:", e)
+            return False
+
+    # ---------------- READ FILE ----------------
+    def read_file(self):
+        try:
+            file = open(self.filepath, "r")
+            data = file.read()
+            file.close()
+
+            print("\n========== FILE CONTENT ==========")
+            print(data)
+            print("==================================")
+
+        except Exception as e:
+            print("Error:", e)
+
+    # ---------------- WRITE FILE ----------------
+    def write_file(self):
+        print("\nThis Operation Will Delate all data existed in the file !")
+        ask = input("Do You Want To Proceed: ").lower()
+        if ask == "yes":
+            try:
+                print("Enter text (type END in new line to stop):")
+                lines = []
+
+                while True:
+                    line = input()
+                    if line.strip() == "END":
+                        break
+                    lines.append(line)
+
+                data = "\n".join(lines)
+                file = open(self.filepath, "w")
+                file.write(data)
+                file.close()
+                print("Data written successfully!")
+
+            except Exception as e:
+                print("Error:", e)
+        
+        else:
+            pass
+
+    # ---------------- APPEND FILE ----------------
+    def append_file(self):
+        try:
+            print("Enter text to append (type END in new line to stop):")
+            lines = []
+
+            while True:
+                line = input()
+                if line == "END":
+                    break
+                lines.append(line)
+
+            data = "\n".join(lines)
+            file = open(self.filepath, "a")
+            file.write("\n" + data)
+            file.close()
+            print("Data appended successfully!")
+
+        except Exception as e:
+            print("Error:", e)
+
+    # ---------------- FIND AND REPLACE ----------------
+    def find_replace(self):
+        try:
+            file = open(self.filepath, "r")
+            data = file.read()
+            file.close()
+
+            find_word = input("Enter word to find: ")
+            replace_word = input("Enter replacement word: ")
+
+            new_data = data.replace(find_word, replace_word)
+
+            file = open(self.filepath, "w")
+            file.write(new_data)
+            file.close()
+            print("Replacement completed!")
+
+        except Exception as e:
+            print("Error:", e)
+
+    # ---------------- ENCRYPT FILE ----------------
+    def encrypt_file(self):
+
+        try:
+            file = open(self.filepath, "r")
+            data = file.read()
+            file.close()
+
+            file = open(self.filepath, "wb")
+            pickle.dump(data, file)
+            file.close()
+            
+            print("File encrypted successfully!")
+            print("Encrypted File:", self.filepath)
+
+        except Exception as e:
+            print("Error:", e)
+
+
+    # ---------------- DECRYPT FILE ----------------
+    def decrypt_file(self):
+        try:
+            file = open(self.filepath, "rb")
+            data = pickle.load(file)
+            file.close()
+
+            file = open(self.filepath, "w", encoding="utf-8")
+            file.write(data)
+            file.close()
+
+            print("File decrypted successfully!")
+
+        except pickle.UnpicklingError:
+            print("This file is not encrypted using pickle!")
+
+        except Exception as e:
+            print("Error:", e)
+
+    # ---------------- CHANGE PATH --------------------
+    def change_path(self):
+        path = input("Enter File Path: ")
+        self.filepath = path
+
+    # ---------------- MENU ----------------
+    def menu(self):
+
+        file_status = self.open_file()
+
+        if file_status:
+            while True:
+                print("\n========== TERMINAL NOTEPAD ==========")
+                print(f"File Path: {self.filepath}\n")
+                print("1. Read File")
+                print("2. Write File")
+                print("3. Append File")
+                print("4. Find and Replace")
+                print("5. Encrypt File")
+                print("6. Decrypt File")
+                print("7. Change Path")
+                print("8. Exit")
+                
+                
+                choice = input("Enter your choice: ")
+
+                if choice == "1":
+                    self.read_file()
+
+                elif choice == "2":
+                    self.write_file()
+
+                elif choice == "3":
+                    self.append_file()
+
+                elif choice == "4":
+                    self.find_replace()
+
+                elif choice == "5":
+                    self.encrypt_file()
+
+                elif choice == "6":
+                    self.decrypt_file()
+
+                elif choice == "7":
+                    self.change_path()
+
+                elif choice == "8":
+                    print("Exiting Notepad...")
+                    break
+
+                else:
+                    print("Invalid choice!")
+
+
+notepad = Notepad()
+notepad.menu()
