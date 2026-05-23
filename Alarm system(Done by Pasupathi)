@@ -1,0 +1,25 @@
+import time
+import datetime
+import random
+
+quotes = [
+    "Good Morning! Start your day with energy!",
+    "Believe in yourself!",
+    "Today is a new opportunity!",
+    "Work hard and stay positive!"]
+
+alarm_time = input("Enter alarm time (HH:MM:SS): ")
+
+print("Alarm is set...")
+
+while True:
+    current_time = datetime.datetime.now().strftime("%H:%M:%S")
+    
+    if current_time == alarm_time:
+        print("\n⏰ WAKE UP!")
+        print("💬", random.choice(quotes))
+        print("Press Enter to stop alarm.")
+        input()
+        break
+
+    time.sleep(1)
