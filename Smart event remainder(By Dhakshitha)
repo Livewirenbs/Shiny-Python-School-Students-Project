@@ -1,0 +1,77 @@
+import datetime
+import time
+import calendar
+import random
+
+events = []
+
+
+while True:
+    print("\n===== EVENT REMINDER SYSTEM =====")
+    print("1. Add Event")
+    print("2. Show Events")
+    print("3. Show Calendar")
+    print("4. Check Reminders")
+    print("5. Exit")
+
+    choice = input("Enter choice: ")
+
+    # ADD EVENT
+    if choice == "1":
+        name = input("Event name: ")
+        date = input("Date (YYYY-MM-DD): ")
+        time_input = input("Time (HH:MM): ")
+
+        full_time = date + " " + time_input
+        events.append([name, full_time])
+
+        print("Event added successfully")
+
+    # SHOW EVENTS
+    elif choice == "2":
+        if len(events) == 0:
+            print("No events added")
+        else:
+            print("\nYour Events:")
+            for e in events:
+                print(e[0], "at", e[1])
+
+    # SHOW CALENDAR
+    elif choice == "3":
+        y = int(input("Enter year: "))
+        m = int(input("Enter month: "))
+
+        print("\nCalendar:")
+        print(calendar.month(y, m))
+
+    # CHECK REMINDERS
+    elif choice == "4":
+        print("\nChecking reminders... (Press Ctrl + C to stop)")
+
+        try:
+            while True:
+                now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+
+                for e in events:
+                    if e[1] == now:
+                        print("\nEVENT ALERT!")
+                        print("Event:", e[0])
+                        print("Time:", e[1])
+                        print(random.choice(messages))
+
+                time.sleep(10)
+
+        except KeyboardInterrupt:
+            print("\nStopped reminder check")
+
+    # EXIT
+    elif choice == "5":
+        print("Goodbye!")
+        print("Don't forget your event!")
+        print("Time is coming soon!")
+        print("Be ready!")
+        print("Stay focused!")
+        break
+
+    else:
+        print("Invalid choice")
