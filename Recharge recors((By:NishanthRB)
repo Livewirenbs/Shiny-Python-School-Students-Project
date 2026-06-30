@@ -1,0 +1,137 @@
+import pandas as pd
+import os
+import matplotlib.pyplot as plt
+
+FILE = "recharge_records.csv"
+
+COLUMNS = ["Mobile Number", "Customer Name", "Operator", "Recharge Amount"]
+
+PLANS = {
+    "Jio": 299,
+    "Airtel": 349,
+    "Vi": 249,
+    "BSNL": 199
+}
+
+def load_data():
+    if os.path.exists(FILE):
+        return pd.read_csv(FILE)
+    else:
+        return pd.DataFrame(columns=COLUMNS)
+
+def save_data(df):
+    df.to_csv(FILE, index=False)
+
+def recharge():
+    df = load_data()
+
+    mobile = input("Enter Mobile Number: ")
+    name = input("Enter Customer Name: ")
+
+    print("\nAvailable Operators")
+    operator_list = list(PLANS.keys())
+
+    for i, op in enumerate(operator_list, start=1):
+        print(f"{i}. {op} - Rs.{PLANS[op]}")
+
+    try:
+        choice = int(input("Choose Operator: "))
+        operator = operator_list[choice - 1]
+    except:
+        print("Invalid Choice")
+        return
+
+    amount = PLANS[operator]
+
+    new_row = pd.DataFrame([[mobile, name, operator, amount]],
+                           columns=COLUMNS)
+
+    df = pd.concat([df, new_row], ignore_index=True)
+    save_data(df)
+
+    print("\nRecharge Successful!")
+    print("Recharge Amount: Rs.", amount)
+
+def view_records():
+    df = load_data()
+
+    if df.empty:
+        print("No Records Found")
+    else:
+        print(df)
+
+def search_record():
+    df = load_data()
+
+    mobile = input("Enter Mobile Number: ")
+
+    result = df[df["Mobile Number"].astype(str) == mobile]
+
+    if result.empty:
+        print("Record Not Found")
+    else:
+        print(result)
+
+def analyze():
+    df = load_data()
+
+    if df.empty:
+        print("No Records Available")
+        return
+
+    print("\nTotal Recharges:", len(df))
+    print("Total Collection: Rs.", df["Recharge Amount"].sum())
+
+    print("\nOperator-wise Recharge")
+    print(df.groupby("Operator")["Recharge Amount"].sum())
+
+def show_graph():
+    df = load_data()
+
+    if df.empty:
+        print("No Records Available")
+        return
+
+    graph = df.groupby("Operator")["Recharge Amount"].sum()
+
+    graph.plot(kind="bar")
+    plt.title("Operator-wise Recharge Collection")
+    plt.xlabel("Operator")
+    plt.ylabel("Recharge Amount")
+    plt.show()
+
+def main():
+    while True:
+        print("\n===== MOBILE RECHARGE RECORD SYSTEM =====")
+        print("1. Recharge Mobile")
+        print("2. View Records")
+        print("3. Search Record")
+        print("4. Analyze Data")
+        print("5. Show Graph")
+        print("6. Exit")
+
+        choice = input("Enter Choice: ")
+
+        if choice == "1":
+            recharge()
+
+        elif choice == "2":
+            view_records()
+
+        elif choice == "3":
+            search_record()
+
+        elif choice == "4":
+            analyze()
+
+        elif choice == "5":
+            show_graph()
+
+        elif choice == "6":
+            print("Thank You!")
+            break
+
+        else:
+            print("Invalid Choice")
+
+main()
